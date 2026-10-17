@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Promocoes - Melhores ofertas do Mercado Livre</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="index.html" class="brand"><div class="mark">ML</div><span>Promocoes</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="btn btn-outline btn-sm">Inicio</a>
+      <a href="admin.html" class="btn btn-primary btn-sm">Painel Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Melhores promocoes do Mercado Livre</h1>
+      <p>Busque ofertas por categoria em todo o site do Brasil (MLB), em portugues.</p>
+      <form action="busca.html" method="get" class="search-form">
+        <input type="text" name="q" placeholder="O que voce procura? (ex: celular, fone de ouvido)" required>
+        <button type="submit">Buscar promocoes</button>
+      </form>
+      <p class="api-status" id="apiStatus"></p>
+    </div>
+  </section>
+
+  <section id="categorias" class="section">
+    <div class="section-header">
+      <h2>Categorias com melhores ofertas</h2>
+      <a href="busca.html?q=" class="btn btn-outline btn-sm">Ver todas</a>
+    </div>
+    <div class="card-grid categories-grid animate-list" id="categoriesGrid"></div>
+  </section>
+
+  <section class="section featured">
+    <div class="section-header"><h2>Destaques</h2></div>
+    <div class="card-grid animate-list" id="featuredGrid"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p><strong>ML Promocoes</strong> - Buscador de ofertas do Mercado Livre para o Brasil.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCategories('categoriesGrid', 12);
+    loadCategories('featuredGrid', 6);
+    checkAPI();
+  });
+</script>
+
+</body>
+</html>

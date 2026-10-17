@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busca - ML Promocoes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="index.html" class="brand"><div class="mark">ML</div><span>Promocoes</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="btn btn-outline btn-sm">Inicio</a>
+      <a href="admin.html" class="btn btn-primary btn-sm">Painel Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page">
+
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="sep">&rsaquo;</span>
+    <span>Busca</span>
+  </nav>
+
+  <div class="page-header">
+    <h1 id="buscaTitulo">Resultado da busca</h1>
+    <p class="subtitle" id="buscaSubtitulo"></p>
+    <a href="index.html" class="btn btn-sm btn-outline">Nova busca</a>
+  </div>
+
+  <div class="results-toolbar">
+    <span class="toolbar-label">Ordenar por:</span>
+    <form id="sortForm" style="display:inline">
+      <input type="hidden" name="sort" id="sortInput" value="price_asc">
+      <button type="button" class="btn btn-sm active" data-sort="price_asc">Preco menor</button>
+      <button type="button" class="btn btn-sm" data-sort="price_desc">Preco maior</button>
+      <button type="button" class="btn btn-sm" data-sort="relevant">Relevancia</button>
+    </form>
+  </div>
+
+  <div class="card-grid products-grid animate-list" id="productsGrid"></div>
+  <div class="pagination"><span class="page-info" id="pageInfo"></span></div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p><strong>ML Promocoes</strong> - Buscador de ofertas do Mercado Livre para o Brasil.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q') || '';
+    document.getElementById('buscaTitulo').textContent = 'Resultado da busca: "' + q + '"';
+    document.getElementById('buscaSubtitulo').textContent = 'Itens para "' + q + '"';
+    loadSearch(q);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categoria - ML Promocoes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="index.html" class="brand"><div class="mark">ML</div><span>Promocoes</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="btn btn-outline btn-sm">Inicio</a>
+      <a href="admin.html" class="btn btn-primary btn-sm">Painel Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page">
+
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="sep">&rsaquo;</span>
+    <span id="catNome">Categoria</span>
+  </nav>
+
+  <div class="page-header" id="catHeader" style="display:none">
+    <h1 id="catTitulo"></h1>
+    <p class="subtitle" id="catSubtitulo"></p>
+    <div class="actions">
+      <a href="index.html" class="btn btn-sm btn-outline">Todas as categorias</a>
+    </div>
+  </div>
+
+  <div class="results-toolbar">
+    <span class="toolbar-label">Ordenar por:</span>
+    <form id="sortFormCat" style="display:inline">
+      <input type="hidden" name="sort" id="sortInputCat" value="price_asc">
+      <button type="button" class="btn btn-sm active" data-sort="price_asc">Preco menor</button>
+      <button type="button" class="btn btn-sm" data-sort="price_desc">Preco maior</button>
+      <button type="button" class="btn btn-sm" data-sort="relevant">Relevancia</button>
+    </form>
+  </div>
+
+  <div class="card-grid products-grid animate-list" id="productsGridCat"></div>
+  <div class="pagination" id="catPagination" style="display:none"><span class="page-info" id="catPageInfo"></span></div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p><strong>ML Promocoes</strong> - Buscador de ofertas do Mercado Livre para o Brasil.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 'MLB1055';
+    const nome = params.get('nome') || 'Categoria';
+    document.getElementById('catNome').textContent = nome;
+    const h = document.getElementById('catHeader');
+    h.style.display = 'block';
+    document.getElementById('catTitulo').textContent = nome;
+    document.getElementById('catSubtitulo').textContent = 'Melhores ofertas ordenadas por preco (menor primeiro)';
+    loadCategory(id);
+  });
+</script>
+
+</body>
+</html>

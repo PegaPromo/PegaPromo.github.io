@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - ML Promocoes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="index.html" class="brand"><div class="mark">ML</div><span>Promocoes</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="btn btn-outline btn-sm">Inicio</a>
+      <a href="admin.html" class="btn btn-primary btn-sm active">Painel Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page admin-page">
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">ML<span>Admin</span></div>
+      <nav class="admin-nav">
+        <a href="#" class="active" onclick="showSec('dashboard')">Dashboard</a>
+        <a href="#" onclick="showSec('links')">Links de Afiliado</a>
+        <a href="#" onclick="showSec('codigo')">Alterar Codigo</a>
+        <form style="margin-top:auto">
+          <button type="button" class="btn btn-danger btn-block" onclick="logoutAdmin()">Sair</button>
+        </form>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-main-header">
+        <h1 id="adminTitulo">Dashboard</h1>
+        <p id="adminSubtitulo">Gerencie links de afiliado e automacao.</p>
+      </header>
+
+      <!-- Login -->
+      <section id="adminLogin" class="admin-card-login" style="max-width:420px;margin:40px auto">
+        <div class="admin-header">
+          <h2>Painel Administrativo</h2>
+          <p>Acesso restrito - insira o codigo de autorizacao</p>
+        </div>
+        <div class="admin-form">
+          <div class="form-group">
+            <label for="adminCode">Codigo de acesso</label>
+            <input type="password" id="adminCode" placeholder="Digite o codigo" autocomplete="off">
+            <span class="help">Codigo padrao: leo2015gabriel</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="tryLogin()">Entrar</button>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+      <div id="adminDashboard" style="display:none">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value" id="statCat">-</div><div class="stat-label">Categorias</div></div>
+          <div class="stat-card"><div class="stat-value" id="statLinks">-</div><div class="stat-label">Links de afiliado</div></div>
+          <div class="stat-card"><div class="stat-value" id="statAuto">-</div><div class="stat-label">Automacao ligada</div></div>
+        </div>
+
+        <div class="admin-section">
+          <h2>Links de Afiliado</h2>
+          <div class="table-wrap" id="linksTableWrap"></div>
+          <div class="form-actions" style="margin-top:16px">
+            <a href="#" class="btn btn-outline" onclick="showSec('links')">Gerenciar todos os links</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links de Afiliado -->
+      <div id="adminLinks" style="display:none">
+        <div class="admin-main-header">
+          <h1>Links de Afiliado</h1>
+          <a href="#" class="btn btn-outline" onclick="showSec('dashboard')">Voltar</a>
+        </div>
+        <div class="admin-form" style="max-width:760px">
+          <div class="form-group">
+            <label>Categoria (ID do Mercado Livre, ex: MLB1055)</label>
+            <input type="text" id="nCategoria" placeholder="MLB1055">
+          </div>
+          <div class="form-group">
+            <label>Label (nome exibido)</label>
+            <input type="text" id="nLabel" placeholder="Eletronicos Afiliado">
+          </div>
+          <div class="form-group">
+            <label>URL de afiliado</label>
+            <input type="url" id="nUrl" placeholder="https://exemplo.com/afiliado?id={id}">
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" id="nAtivo"> <label for="nAtivo">Link ativo</label>
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" id="nAuto"> <label for="nAuto">Habilitar automacao</label>
+          </div>
+          <div class="form-group" id="nAutoGroup" style="display:none">
+            <label>Pattern de automacao</label>
+            <input type="text" id="nPattern" placeholder="https://exemplo.com/click?url={url}&id={id}">
+            <span class="help">Placeholders: {url}, {id}, {title}</span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="criarLink()">Criar link</button>
+          </div>
+        </div>
+
+        <div class="admin-section" style="margin-top:32px">
+          <h2>Lista de Links</h2>
+          <div class="table-wrap" id="adminLinksTable"></div>
+        </div>
+      </div>
+
+      <!-- Alterar Codigo -->
+      <div id="adminCodigo" style="display:none">
+        <div class="admin-main-header"><h1>Alterar Codigo de Acesso</h1></div>
+        <div class="admin-form" style="max-width:560px">
+          <div class="form-group">
+            <label>Codigo atual</label>
+            <input type="password" id="codAtual" placeholder="Codigo atual">
+          </div>
+          <div class="form-group">
+            <label>Novo codigo (minimo 6 caracteres)</label>
+            <input type="password" id="codNovo" placeholder="Novo codigo">
+          </div>
+          <div class="form-group">
+            <label>Confirmar novo codigo</label>
+            <input type="password" id="codConf" placeholder="Repita o novo codigo">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="alterarCodigo()">Alterar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="small">Conectado ao backend seguro. Cod: leo2015gabriel</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  const API_URL = 'https://SEU-BACKEND.onrender.com';
+
+  async function apiFetch(path, opts = {}) {
+    const r = await fetch(API_URL + path, { credentials: 'include', headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) }, ...opts });
+    return r;
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const me = await apiFetch('/admin/me').then(r => r.json()).catch(() => ({ authenticated: false }));
+    document.getElementById('adminLogin').style.display = me.authenticated ? 'none' : 'block';
+    document.getElementById('adminDashboard').style.display = me.authenticated ? 'block' : 'none';
+    if (me.authenticated) adminInitDashboard();
+  });
+
+  async function tryLogin() {
+    const code = document.getElementById('adminCode').value;
+    const r = await apiFetch('/admin/login', { method: 'POST', body: JSON.stringify({ code }) });
+    if (r.ok) {
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+      adminInitDashboard();
+    } else {
+      alert('Codigo invalido.');
+    }
+  }
+
+  async function logoutAdmin() {
+    await apiFetch('/admin/logout', { method: 'POST' });
+    location.reload();
+  }
+
+  function showSec(sec) {
+    ['adminDashboard', 'adminLinks', 'adminCodigo'].forEach(s => document.getElementById(s).style.display = 'none');
+    document.getElementById(sec).style.display = 'block';
+    document.getElementById('adminTitulo').textContent = sec === 'dashboard' ? 'Dashboard' : sec === 'links' ? 'Links de Afiliado' : 'Alterar Codigo';
+    if (sec === 'links') renderLinksTable();
+    if (sec === 'dashboard') adminInitDashboard();
+  }
+
+  async function adminInitDashboard() {
+    const r = await apiFetch('/admin/links');
+    const j = await r.json();
+    const links = j.links || [];
+    document.getElementById('statCat').textContent = '8';
+    document.getElementById('statLinks').textContent = links.length;
+    document.getElementById('statAuto').textContent = links.filter(l => l.automation_enabled === 1).length;
+    renderTable('linksTableWrap', links.slice(0, 5), false);
+  }
+
+  async function renderLinksTable() {
+    const r = await apiFetch('/admin/links');
+    const j = await r.json();
+    const links = j.links || [];
+    renderTable('adminLinksTable', links, true);
+  }
+
+  function renderTable(containerId, links, full = false) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    let html = '<table class="admin-table"><thead><tr><th>Categoria</th><th>Label</th><th>URL</th><th>Ativo</th><th>Automacao</th>';
+    if (full) html += '<th>Acoes</th>';
+    html += '</tr></thead><tbody>';
+    links.forEach(l => {
+      html += `<tr>
+        <td><strong>${esc(l.category_id)}</strong></td>
+        <td>${esc(l.label)}</td>
+        <td><a href="${esc(l.url)}" target="_blank" class="small">${esc(l.url)}</a></td>
+        <td><span class="badge ${l.is_active === 1 ? 'ok' : 'no'}">${l.is_active === 1 ? 'Sim' : 'Nao'}</span></td>
+        <td><span class="badge ${l.automation_enabled === 1 ? 'ok' : 'no'}">${l.automation_enabled === 1 ? 'Ligado' : 'Desligado'}</span></td>`;
+      if (full) {
+        html += `<td><button class="btn btn-sm btn-outline" onclick="toggleLink('${esc(l.id)}')">Toggle</button> <button class="btn btn-sm btn-danger" onclick="excluirLink('${esc(l.id)}')">Excluir</button></td>`;
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
+  }
+
+  async function toggleLink(id) {
+    await apiFetch('/admin/links/' + id + '/toggle-automation', { method: 'POST' });
+    renderLinksTable();
+    adminInitDashboard();
+  }
+
+  async function excluirLink(id) {
+    if (!confirm('Excluir este link?')) return;
+    await apiFetch('/admin/links/' + id + '/excluir', { method: 'POST' });
+    renderLinksTable();
+    adminInitDashboard();
+  }
+
+  async function criarLink() {
+    const cat = document.getElementById('nCategoria').value;
+    const label = document.getElementById('nLabel').value;
+    const url = document.getElementById('nUrl').value;
+    const ativo = document.getElementById('nAtivo').checked;
+    const auto = document.getElementById('nAuto').checked;
+    const pattern = document.getElementById('nPattern').value;
+    const r = await apiFetch('/admin/links', {
+      method: 'POST',
+      body: JSON.stringify({ category_id: cat, label, url, is_active: ativo ? 'on' : '', automation_enabled: auto ? 'on' : '', automation_pattern: pattern })
+    });
+    if (r.ok) {
+      alert('Link criado!');
+      document.getElementById('nCategoria').value = '';
+      document.getElementById('nLabel').value = '';
+      document.getElementById('nUrl').value = '';
+      renderLinksTable();
+      adminInitDashboard();
+    } else {
+      const j = await r.json().catch(() => ({}));
+      alert(j.error || 'Erro ao criar link');
+    }
+  }
+
+  async function alterarCodigo() {
+    const atual = document.getElementById('codAtual').value;
+    const novo = document.getElementById('codNovo').value;
+    const conf = document.getElementById('codConf').value;
+    const r = await apiFetch('/admin/codigo', {
+      method: 'POST',
+      body: JSON.stringify({ codigo_atual: atual, codigo_novo: novo, codigo_confirmacao: conf })
+    });
+    if (r.ok) {
+      alert('Codigo alterado com sucesso!');
+      document.getElementById('codAtual').value = '';
+      document.getElementById('codNovo').value = '';
+      document.getElementById('codConf').value = '';
+    } else {
+      const j = await r.json().catch(() => ({}));
+      alert(j.error || 'Erro ao alterar');
+    }
+  }
+
+  document.getElementById('nAuto')?.addEventListener('change', function () {
+    document.getElementById('nAutoGroup').style.display = this.checked ? '' : 'none';
+  });
+</script>
+
+</body>
+</html>
